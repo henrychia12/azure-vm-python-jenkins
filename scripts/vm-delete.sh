@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # delete resource group
-az group delete --name JenkinsResources
+az group delete --name JenkinsResource
