@@ -6,11 +6,8 @@ az configure --defaults location=uksouth
 # create resource group
 az group create --resource-group JenkinsResource
 
-# create virtual network
+# create virtual network and subnet
 az network vnet create --resource-group JenkinsResource --name JenkinsNetwork --address-prefixes 10.0.0.0/16 --subnet-name JenkinsSubnet --subnet-prefix 10.0.0.0/24
-
-# create subnet
-az network vnet subnet create --resource-group JenkinsResource --vnet-name JenkinsNetwork --name JenkinsSubnet --address-prefixes 10.0.0.0/24
 
 # create network security group
 az network nsg create --resource-group JenkinsResource --name JenkinsNetworkSecurityGroup
@@ -19,7 +16,7 @@ az network nsg create --resource-group JenkinsResource --name JenkinsNetworkSecu
 az network nsg rule create --resource-group JenkinsResource --name HTTP --priority 300 --nsg-name JenkinsNetworkSecurityGroup
 
 # setting ssh rule on nsg
-az network nsg rule create --resource-group JenkinsResource --name SSH --priority 200 --nsg-name JenkinsNetworkSecurityGroup --destination-port-ranges 22
+az network nsg rule create --resource-group JenkinsResource --name SSH --priority 100 --nsg-name JenkinsNetworkSecurityGroup --destination-port-ranges 22
 
 # creating DNS and Static Public IP
 az network public-ip create --resource-group JenkinsResource --name JenkinsPublicIPOne --dns-name henrychia11 --allocation-method Static
