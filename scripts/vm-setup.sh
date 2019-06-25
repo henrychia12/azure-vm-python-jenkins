@@ -10,6 +10,7 @@ az group create --resource-group JenkinsResource
 az network vnet create --resource-group JenkinsResource --name JenkinsNetwork --address-prefixes 10.0.0.0/16
 
 # create subnet
+az network vnet create --resource-group JenkinsResource --name JenkinsNetwork --address-prefixes 10.0.0.0/16 --subnet-name JenkinsSubnet --subnet-prefixe 10.0.0.0/24
 az network vnet subnet create --resource-group JenkinsResource --vnet-name JenkinsNetwork --address-prefixes 10.0.0.0/16 --name JenkinsSubnet --subnet-prefix 10.0.0.0/24
 
 # create network security group
@@ -28,11 +29,11 @@ az network public-ip create --resource-group JenkinsResource --name JenkinsPubli
 az network nic create --resource-group JenkinsResource --name JenkinsNetworkInterface --vnet-name JenkinsNetwork --subnet JenkinsSubnet --network-security-group JenkinsNetworkSecurityGroup --public-ip-address JenkinsPublicIP
 
 # create jenkins host virtual machine
-az vm create --resource-group JenkinsResource --name JenkinsHostVM --IMAGE UbuntuLTS --nics JenkinsNetworkInterface 
+az vm create --resource-group JenkinsResource --name JenkinsHostVM --IMAGE UbuntuLTS --nics JenkinsNetworkInterface --size Standard_B1ls 
 
 # create jenkins slave virtual machine
-az vm create --resource-group JenkinsResource --name JenkinsSlaveVM --IMAGE UbuntuLTS --nics JenkinsNetworkInterface
+az vm create --resource-group JenkinsResource --name JenkinsSlaveVM --IMAGE UbuntuLTS --nics JenkinsNetworkInterface --size Standard_B1ls
 
 # create python server virtual machine
-az vm create --resource-group JenkinsResource --name JenkinsPythonVM --IMAGE UbuntuLTS --nics JenkinsNetworkInterface
+az vm create --resource-group JenkinsResource --name JenkinsPythonVM --IMAGE UbuntuLTS --nics JenkinsNetworkInterface --size Standard_B1ls
 
