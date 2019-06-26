@@ -10,7 +10,9 @@ az group create --resource-group JenkinsResource
 az network vnet create --resource-group JenkinsResource --name JenkinsNetwork --address-prefixes 10.0.0.0/16 --subnet-name JenkinsSubnet --subnet-prefix 10.0.0.0/24
 
 # create network security group
-az network nsg create --resource-group JenkinsResource --name JenkinsNetworkSecurityGroup
+az network nsg create --resource-group JenkinsResource --name JenkinsHostNetworkSecurityGroup
+az network nsg create --resource-group JenkinsResource --name JenkinsSlaveNetworkSecurityGroup
+az network nsg create --resource-group JenkinsResource --name PythonServerNetworkSecurityGroup
 
 # jenkins host NSG rules
 az network nsg rule create --resource-group JenkinsResource --name SSH --priority 100 --nsg-name JenkinsHostNetworkSecurityGroup --destination-port-ranges 22
