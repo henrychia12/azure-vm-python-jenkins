@@ -36,11 +36,11 @@ az network nic create --resource-group JenkinsResource --name JenkinsSlaveNetwor
 az network nic create --resource-group JenkinsResource --name PythonServerNetworkInterface --vnet-name JenkinsNetwork --subnet JenkinsSubnet --network-security-group PythonServerNetworkSecurityGroup --public-ip-address PythonServerPublicIP
 
 # create jenkins host virtual machine
-az vm create --resource-group JenkinsResource --name JenkinsHostVM --image UbuntuLTS --nics JenkinsHostNetworkInterface --size Standard_B1ls --generate-ssh-keys
+az vm create --resource-group JenkinsResource --name JenkinsHostVM --image UbuntuLTS --nics JenkinsHostNetworkInterface --size Standard_B1ms --generate-ssh-keys
 
 # create jenkins slave virtual machine
-az vm create --resource-group JenkinsResource --name JenkinsSlaveVM --image UbuntuLTS --nics JenkinsSlaveNetworkInterface --size Standard_B1ls --generate-ssh-keys
+az vm create --resource-group JenkinsResource --name JenkinsSlaveVM --image UbuntuLTS --nics JenkinsSlaveNetworkInterface --size Standard_B1ms --generate-ssh-keys
 
 # create python server virtual machine
-az vm create --resource-group JenkinsResource --name JenkinsPythonVM --image UbuntuLTS --nics PythonServerNetworkInterface --size Standard_B1ls --generate-ssh-keys
+az vm create --resource-group JenkinsResource --name JenkinsPythonVM --image UbuntuLTS --nics PythonServerNetworkInterface --size Standard_B1ms --generate-ssh-keys
 
