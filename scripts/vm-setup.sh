@@ -23,7 +23,7 @@ az network nsg rule create --resource-group JenkinsResource --name SSH --priorit
 
 # python server NSG rules
 az network nsg rule create --resource-group JenkinsResource --name SSH --priority 100 --nsg-name PythonServerNetworkSecurityGroup --destination-port-ranges 22
-az network nsg rule create --resource-group JenkinsResource --name PythonServer priority 200 --nsg-name PythonServerNetworkSecurityGroup --destination-port-ranges 3000
+az network nsg rule create --resource-group JenkinsResource --name PythonServer --priority 200 --nsg-name PythonServerNetworkSecurityGroup --destination-port-ranges 3000
 
 # creating DNS and Static Public IP
 az network public-ip create --resource-group JenkinsResource --name JenkinsHostPublicIP --dns-name henrychia11 --allocation-method Static
