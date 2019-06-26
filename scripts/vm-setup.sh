@@ -12,28 +12,33 @@ az network vnet create --resource-group JenkinsResource --name JenkinsNetwork --
 # create network security group
 az network nsg create --resource-group JenkinsResource --name JenkinsNetworkSecurityGroup
 
-# HTTP rule set on nsg
-az network nsg rule create --resource-group JenkinsResource --name HTTP --priority 300 --nsg-name JenkinsNetworkSecurityGroup
+# jenkins host NSG rules
+az network nsg rule create --resource-group JenkinsResource --name SSH --priority 100 --nsg-name JenkinsHostNetworkSecurityGroup --destination-port-ranges 22
+az network nsg rule create --resource-group JenkinsResource --name Jenkins --priority 200 --nsg-name JenkinsHostNetworkSecurityGroup --destination-port-ranges 8080
 
-# setting ssh rule on nsg
-az network nsg rule create --resource-group JenkinsResource --name SSH --priority 100 --nsg-name JenkinsNetworkSecurityGroup --destination-port-ranges 22
+# jenkins slave NSG rules
+az network nsg rule create --resource-group JenkinsResource --name SSH --priority 100 --nsg-name JenkinsSlaveNetworkSecurityGroup --destination-port-ranges 22
+
+# python server NSG rules
+az network nsg rule create --resource-group JenkinsResource --name SSH --priority 100 --nsg-name PythonServerNetworkSecurityGroup --destination-port-ranges 22
+az network nsg rule create --resource-group JenkinsResource --name Pytho-Server priority 200 --nsg-name PythonServerNetworkSecurityGroup --destination-port-ranges 3000
 
 # creating DNS and Static Public IP
-az network public-ip create --resource-group JenkinsResource --name JenkinsPublicIPOne --dns-name henrychia11 --allocation-method Static
-az network public-ip create --resource-group JenkinsResource --name JenkinsPublicIPTwo --dns-name henrychia12 --allocation-method Static
-az network public-ip create --resource-group JenkinsResource --name JenkinsPublicIPThree --dns-name henrychia13 --allocation-method Static
+az network public-ip create --resource-group JenkinsResource --name JenkinsHostPublicIP --dns-name henrychia11 --allocation-method Static
+az network public-ip create --resource-group JenkinsResource --name JenkinsSlavePublicIP --dns-name henrychia12 --allocation-method Static
+az network public-ip create --resource-group JenkinsResource --name PythonServerPublicIP --dns-name henrychia13 --allocation-method Static
 
 # creating Network Interface Name with nsg
-az network nic create --resource-group JenkinsResource --name JenkinsNetworkInterfaceOne --vnet-name JenkinsNetwork --subnet JenkinsSubnet --network-security-group JenkinsNetworkSecurityGroup --public-ip-address JenkinsPublicIPOne
-az network nic create --resource-group JenkinsResource --name JenkinsNetworkInterfaceTwo --vnet-name JenkinsNetwork --subnet JenkinsSubnet --network-security-group JenkinsNetworkSecurityGroup --public-ip-address JenkinsPublicIPTwo
-az network nic create --resource-group JenkinsResource --name JenkinsNetworkInterfaceThree --vnet-name JenkinsNetwork --subnet JenkinsSubnet --network-security-group JenkinsNetworkSecurityGroup --public-ip-address JenkinsPublicIPThree
+az network nic create --resource-group JenkinsResource --name JenkinsHostNetworkInterface --vnet-name JenkinsNetwork --subnet JenkinsSubnet --network-security-group JenkinsHostNetworkSecurityGroup --public-ip-address JenkinsHostPublicIP
+az network nic create --resource-group JenkinsResource --name JenkinsSlaveNetworkInterface --vnet-name JenkinsNetwork --subnet JenkinsSubnet --network-security-group JenkinsSlaveNetworkSecurityGroup --public-ip-address JenkinsSlavePublicIP
+az network nic create --resource-group JenkinsResource --name PythonServerNetworkInterface --vnet-name JenkinsNetwork --subnet JenkinsSubnet --network-security-group PythonServerNetworkSecurityGroup --public-ip-address PythonServerPublicIP
 
 # create jenkins host virtual machine
-az vm create --resource-group JenkinsResource --name JenkinsHostVM --image UbuntuLTS --nics JenkinsNetworkInterfaceOne --size Standard_B1ls 
+az vm create --resource-group JenkinsResource --name JenkinsHostVM --image UbuntuLTS --nics JenkinsHostNetworkInterface --size Standard_B1ls --generate-ssh-keys
 
 # create jenkins slave virtual machine
-az vm create --resource-group JenkinsResource --name JenkinsSlaveVM --image UbuntuLTS --nics JenkinsNetworkInterfaceTwo --size Standard_B1ls
+az vm create --resource-group JenkinsResource --name JenkinsSlaveVM --image UbuntuLTS --nics JenkinsSlaveNetworkInterface --size Standard_B1ls --generate-ssh-keys
 
 # create python server virtual machine
-az vm create --resource-group JenkinsResource --name JenkinsPythonVM --image UbuntuLTS --nics JenkinsNetworkInterfaceThree --size Standard_B1ls
+az vm create --resource-group JenkinsResource --name JenkinsPythonVM --image UbuntuLTS --nics PythonServerNetworkInterface --size Standard_B1ls --generate-ssh-keys
 
