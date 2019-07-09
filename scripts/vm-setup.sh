@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 # setting defaulted location
 az configure --defaults location=uksouth
