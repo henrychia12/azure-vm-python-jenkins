@@ -1,6 +1,6 @@
 # Azure Jenkins Python - VM
 Azure cloud provider to host three different virtual machines - Jenkins Host, Jenkins Slave and Python Server.
-##Usage
+## Usage
 Git clone this repository to your local machine. Change to the newly cloned directory and run the required shell script.
 
 Example
